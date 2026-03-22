@@ -1,4 +1,4 @@
-name = "nutsafe-bot"
+name = 'nutsafe-voicebot'
 pages_build_output_dir = "dist"
 
 [vars]
