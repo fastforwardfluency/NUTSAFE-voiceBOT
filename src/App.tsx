@@ -27,6 +27,17 @@ REGRAS CRÍTICAS:
    Nome Fantasia: NUTSAFE
    Data de fundação: 20/04/2018
 
+CONHECIMENTO DA EMPRESA:
+- Nutsafe: Elevando seu Negócio Gastronômico através de Estratégia e Segurança no Rio de Janeiro.
+- Missão: Eliminar a distância entre as normas da ANVISA e a realidade operacional, transformando o ambiente e potencializando lucros.
+- Soluções Principais:
+  * Boas Práticas de Fabricação (BPF): Implementação de protocolos e "Cultura de Qualidade" com visitas técnicas personalizadas.
+  * Fichas Técnicas Estratégicas: Padronização de receitas e cálculo de CMV para proteção de margens.
+  * Rotulagem Nutricional Avançada: Conformidade com RDC 429/2020 e IN 75/2020 (alérgenos e tabelas).
+  * Treinamentos Especializados: Capacitação prática para reduzir rotatividade e riscos de contaminação.
+- Diferencial: Abordagem proativa (prevenção de riscos), suporte regular, foco em conformidade + lucratividade (crescimento da marca).
+- Visão: Estar entre as cinco maiores empresas de consultoria em segurança alimentar do Rio de Janeiro até 2030.
+
 Exemplo: "Bem-vindo à Nutsafe. Estamos à disposição para assegurar a excelência técnica do seu estabelecimento. Como posso auxiliar na sua conformidade regulatória hoje?"
 `;
 
@@ -52,24 +63,24 @@ export default function App() {
     setSummary('Gerando resumo executivo...');
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) throw new Error("API Key missing");
-      
-      const ai = new GoogleGenAI({ apiKey });
       const conversation = transcriptions.map(t => `${t.role === 'user' ? 'Cliente' : 'Consultor'}: ${t.text}`).join('\n');
       
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `Com base na conversa abaixo entre um consultor da Nutsafe e um cliente, crie um resumo executivo extremamente conciso, voltado para o cliente e com foco no marketing da Nutsafe. Destaque o valor agregado e os próximos passos sugeridos.
-        
-Conversa:
-${conversation}`,
+      const response = await fetch('/api/summary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversation }),
       });
 
-      setSummary(response.text || 'Não foi possível gerar o resumo.');
-    } catch (err) {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Falha ao gerar resumo');
+      }
+
+      const data = await response.json();
+      setSummary(data.text || 'Não foi possível gerar o resumo.');
+    } catch (err: any) {
       console.error("Error generating summary:", err);
-      setSummary('Erro ao gerar o resumo. Por favor, tente novamente.');
+      setSummary(`Erro ao gerar o resumo: ${err.message}`);
     } finally {
       setIsGeneratingSummary(false);
     }

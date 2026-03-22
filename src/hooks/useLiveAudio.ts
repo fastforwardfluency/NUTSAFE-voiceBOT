@@ -89,7 +89,7 @@ export function useLiveAudio({ systemInstruction, onInterrupted, onTranscription
   const connect = useCallback(async () => {
     try {
       setError(null);
-      const apiKey = process.env.GEMINI_API_KEY;
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
       if (!apiKey) {
         setError("API Key não encontrada. Verifique as configurações.");
         return;

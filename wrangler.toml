@@ -1,0 +1,7 @@
+name = "nutsafe-bot"
+pages_build_output_dir = "dist"
+
+[vars]
+# GEMINI_API_KEY (for backend functions) and VITE_GEMINI_API_KEY (for frontend)
+# should be set in the Cloudflare dashboard for security
+# or via `wrangler pages secret put <KEY_NAME>`
