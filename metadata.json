@@ -1,0 +1,7 @@
+{
+  "name": "Nutsafe - Bot",
+  "description": "Conversational AI bot for Nutsafe, featuring a Rio de Janeiro accent and real-time voice interaction to drive sales calls.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
